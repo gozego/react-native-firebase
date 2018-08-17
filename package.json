@@ -17,6 +17,7 @@
     "lint": "eslint ./lib ./tests/src ./tests/lib",
     "precommit": "lint-staged",
     "prepublish": "npm run clean && npm run build",
+    "postinstall": "postinstall-build dist && opencollective postinstall || exit 0",
     "test-cli": "node ./bin/test.js",
     "tests-packager": "cd tests && npm run start",
     "tests-npm-install": "cd tests && npm install",
