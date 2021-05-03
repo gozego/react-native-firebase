@@ -119,7 +119,8 @@ class Firebase {
 
   constructor() {
     if (!FirebaseCoreModule) {
-      throw new Error(INTERNALS.STRINGS.ERROR_MISSING_CORE);
+      return;
+      // throw new Error(INTERNALS.STRINGS.ERROR_MISSING_CORE);
     }
     APPS.initializeNativeApps();
 
