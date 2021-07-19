@@ -37,14 +37,14 @@
   "license": "Apache-2.0",
   "keywords": ["react", "admob", "auth", "config", "digits", "fabric", "functions", "phone-auth", "sms", "firestore", "cloud-firestore", "datastore", "remote-config", "transactions", "react-native", "react-native-firebase", "firebase", "fcm", "apn", "gcm", "analytics", "messaging", "database", "android", "ios", "crash", "firestack", "performance", "firestore", "dynamic-links", "crashlytics"],
   "peerDependencies": {
+    "fbjs": "*",
     "react": "*",
-    "react-native": ">= 0.48.0",
-    "fbjs": "*"
+    "react-native": ">= 0.48.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
-    "babel-jest": "^14.1.0",
+    "babel-jest": "^27.0.6",
     "babel-preset-react-native": "^1.9.0",
     "babel-preset-react-native-syntax": "^1.0.0",
     "debug": "^2.6.9",
@@ -65,13 +65,14 @@
     "prettier": "1.10.2",
     "react": "^16.3.0-alpha.1",
     "react-dom": "^16.3.0-alpha.1",
-    "react-native": "^0.54.4",
+    "react-native": "^0.64.2 ",
     "rimraf": "^2.6.2",
     "shelljs": "^0.7.8",
     "typescript": "^2.7.2",
-    "wml": "0.0.82"
+    "wml": "^0.0.83"
   },
   "dependencies": {
+    "jest": "^27.0.6",
     "opencollective": "^1.0.3",
     "postinstall-build": "^5.0.1",
     "prop-types": "^15.6.1"
