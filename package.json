@@ -24,7 +24,6 @@
     "tests-watch-start": "npm run test-cli watch init start",
     "tests-watch-stop": "npm run test-cli watch stop",
     "validate-ts-declarations": "tsc --project ./",
-    "postinstall": "npx force-resolutions@1.0.10"
   },
   "repository": {
     "type": "git",
