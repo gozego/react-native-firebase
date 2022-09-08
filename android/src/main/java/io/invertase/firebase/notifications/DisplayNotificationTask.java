@@ -38,8 +38,8 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
   private ReactApplicationContext reactContext;
 
   public DisplayNotificationTask(Context context, ReactApplicationContext reactContext,
-                                 NotificationManager notificationManager,
-                                 Bundle notification, Promise promise) {
+      NotificationManager notificationManager,
+      Bundle notification, Promise promise) {
     this.context = context;
     this.notification = notification;
     this.notificationManager = notificationManager;
@@ -148,7 +148,7 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
 
         if (defaults == 0) {
           ArrayList<Integer> defaultsArray = android.getIntegerArrayList("defaults");
-          if(defaultsArray != null) {
+          if (defaultsArray != null) {
             for (Integer defaultValue : defaultsArray) {
               defaults |= defaultValue;
             }
@@ -213,9 +213,11 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
         nb = nb.setProgress(max.intValue(), progressI.intValue(), progress.getBoolean("indeterminate"));
       }
       // TODO: Public version of notification
-      /* if (android.containsKey("publicVersion")) {
-        nb = nb.setPublicVersion();
-      } */
+      /*
+       * if (android.containsKey("publicVersion")) {
+       * nb = nb.setPublicVersion();
+       * }
+       */
       if (android.containsKey("remoteInputHistory")) {
         nb = nb.setRemoteInputHistory(android.getStringArray("remoteInputHistory"));
       }
@@ -253,7 +255,7 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
       }
       if (android.containsKey("vibrate")) {
         ArrayList<Integer> vibrate = android.getIntegerArrayList("vibrate");
-        if(vibrate != null) {
+        if (vibrate != null) {
           long[] vibrateArray = new long[vibrate.size()];
           for (int i = 0; i < vibrate.size(); i++) {
             vibrateArray[i] = vibrate.get(i).longValue();
@@ -281,7 +283,7 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
 
       String tag = null;
       if (android.containsKey("tag")) {
-          tag = android.getString("tag");
+        tag = android.getString("tag");
       }
 
       // Create the notification intent
@@ -313,9 +315,8 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
   private NotificationCompat.Action createAction(Bundle action, Class intentClass, Bundle notification) {
     boolean showUserInterface = action.containsKey("showUserInterface") && action.getBoolean("showUserInterface");
     String actionKey = action.getString("action");
-    PendingIntent actionIntent = showUserInterface ?
-      createIntent(intentClass, notification, actionKey) :
-      createBroadcastIntent(notification, actionKey);
+    PendingIntent actionIntent = showUserInterface ? createIntent(intentClass, notification, actionKey)
+        : createBroadcastIntent(notification, actionKey);
     int icon = getIcon(action.getString("icon"));
     String title = action.getString("title");
 
@@ -333,11 +334,11 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
     }
     // TODO: SemanticAction and ShowsUserInterface only available on v28?
     // if (action.containsKey("semanticAction")) {
-    //   Double semanticAction = action.getDouble("semanticAction");
-    //   ab = ab.setSemanticAction(semanticAction.intValue());
+    // Double semanticAction = action.getDouble("semanticAction");
+    // ab = ab.setSemanticAction(semanticAction.intValue());
     // }
     // if (action.containsKey("showsUserInterface")) {
-    //   ab = ab.setShowsUserInterface(action.getBoolean("showsUserInterface"));
+    // ab = ab.setShowsUserInterface(action.getBoolean("showsUserInterface"));
     // }
 
     return ab.build();
@@ -353,7 +354,19 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
     }
 
     String notificationId = notification.getString("notificationId");
-    return PendingIntent.getActivity(context, notificationId.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    PendingIntent pi = null;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      pi = PendingIntent.getActivity(context, notificationId.hashCode(),
+          intent,
+          PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    } else {
+      pi = PendingIntent.getActivity(context, notificationId.hashCode(),
+          intent,
+          PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    return pi;
   }
 
   private PendingIntent createBroadcastIntent(Bundle notification, String action) {
@@ -365,7 +378,19 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
     intent.setAction("io.invertase.firebase.notifications.BackgroundAction");
     intent.putExtra("action", action);
     intent.putExtra("notification", notification);
-    return PendingIntent.getBroadcast(context, notificationId.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    PendingIntent pi = null;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(),
+          intent,
+          PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    } else {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(),
+          intent,
+          PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    return pi;
   }
 
   private RemoteInput createRemoteInput(Bundle remoteInput) {
@@ -417,9 +442,9 @@ public class DisplayNotificationTask extends AsyncTask<Void, Void, Void> {
   }
 
   private int getIcon(String icon) {
-    int resourceId = RNFirebaseNotificationManager.getResourceId(context,"mipmap", icon);
+    int resourceId = RNFirebaseNotificationManager.getResourceId(context, "mipmap", icon);
     if (resourceId == 0) {
-      resourceId = RNFirebaseNotificationManager.getResourceId(context,"drawable", icon);
+      resourceId = RNFirebaseNotificationManager.getResourceId(context, "drawable", icon);
     }
     return resourceId;
   }

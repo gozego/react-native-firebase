@@ -1,6 +1,5 @@
 package io.invertase.firebase.notifications;
 
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -221,8 +220,15 @@ public class RNFirebaseNotificationManager {
 
   private void cancelAlarm(String notificationId) {
     Intent notificationIntent = new Intent(context, RNFirebaseNotificationReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId.hashCode(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    alarmManager.cancel(pendingIntent);
+
+    PendingIntent pi=null;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(), notificationIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }else {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(), notificationIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    alarmManager.cancel(pi);
   }
 
   private void displayNotification(Bundle notification, Promise promise) {
@@ -368,8 +374,14 @@ public class RNFirebaseNotificationManager {
 
     Intent notificationIntent = new Intent(context, RNFirebaseNotificationReceiver.class);
     notificationIntent.putExtras(notification);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId.hashCode(),
-      notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    PendingIntent pi=null;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(), notificationIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }else {
+      pi = PendingIntent.getBroadcast(context, notificationId.hashCode(), notificationIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     if (schedule.containsKey("repeatInterval")) {
       // If fireDate you specify is in the past, the alarm triggers immediately.
@@ -434,14 +446,14 @@ public class RNFirebaseNotificationManager {
         return;
       }
 
-      alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, fireDate, interval, pendingIntent);
+      alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, fireDate, interval, pi);
     } else {
       if (schedule.containsKey("exact")
         && schedule.getBoolean("exact")
         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, fireDate, pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, fireDate, pi);
       } else {
-        alarmManager.set(AlarmManager.RTC_WAKEUP, fireDate, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, fireDate, pi);
       }
     }
 
