@@ -8,8 +8,8 @@ import java.lang.ref.WeakReference;
 import android.util.Log;
 import android.os.AsyncTask;
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;

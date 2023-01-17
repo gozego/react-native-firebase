@@ -2,7 +2,7 @@ package io.invertase.firebase.analytics;
 
 import android.util.Log;
 import android.app.Activity;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactMethod;

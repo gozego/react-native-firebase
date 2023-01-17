@@ -1,7 +1,7 @@
 package io.invertase.firebase.storage;
 
 import android.content.ContentResolver;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.os.Environment;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.webkit.MimeTypeMap;
 
 import com.facebook.react.bridge.Arguments;
